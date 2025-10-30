@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Disaster Relief Resource Management System 🌍</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="colours.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="bg-primary text-light p-3 mb-4">
+    <h1 class="text-center">🌍 Disaster Relief Resource Management System</h1>
+    <nav class="d-flex justify-content-center mt-3" aria-label="Primary Navigation">
+      <ul class="nav nav-pills" id="navTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="pill" data-bs-target="#home" type="button"
+            role="tab" aria-controls="home" aria-selected="true">Home</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="volunteer-tab" data-bs-toggle="pill" data-bs-target="#volunteer" type="button"
+            role="tab" aria-controls="volunteer" aria-selected="false">Volunteer</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="victim-tab" data-bs-toggle="pill" data-bs-target="#victim" type="button"
+            role="tab" aria-controls="victim" aria-selected="false">Request Help</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mb-5">
+    <div class="tab-content">
+      <!-- Home Section -->
+      <section id="home" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <h2>Welcome to DRRMS</h2>
+        <p>
+          This platform connects volunteers with people affected by disasters to provide essential resources like food,
+          shelter, medicine, and emergency transport.
+        </p>
+        <p>Select your role above to participate or request assistance.</p>
+      </section>
+
+      <!-- Volunteer Section -->
+      <section id="volunteer" class="tab-pane fade" role="tabpanel" aria-labelledby="volunteer-tab" tabindex="0">
+        <h2>Volunteer Dashboard</h2>
+
+        <form id="resourceForm" class="mb-4" novalidate>
+          <fieldset>
+            <legend>Add Available Resource or Service</legend>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="resType" class="form-label">Resource / Service Type</label>
+                <select id="resType" class="form-select" required aria-required="true" aria-describedby="resTypeHelp">
+                  <option value="" disabled selected>Select type</option>
+                  <option>Food</option>
+                  <option>Water</option>
+                  <option>Shelter</option>
+                  <option>Medicine</option>
+                  <option>Clothes</option>
+                  <option>Emergency Transport</option>
+                  <option>Psychological Support</option>
+                  <option>Rescue Team</option>
+                  <option>Others</option>
+                </select>
+                <div id="resTypeHelp" class="form-text">Choose the type of resource or service you offer.</div>
+              </div>
+
+              <div class="col-md-6 visually-hidden" id="customResTypeDiv">
+                <label for="customResType" class="form-label">Please specify your resource/service</label>
+                <input type="text" id="customResType" class="form-control" placeholder="Enter custom resource/service" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="resQty" class="form-label">Quantity / Capacity</label>
+                <input type="text" id="resQty" class="form-control" required placeholder="e.g., 50 meals, 10 beds"
+                  aria-required="true" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="resLocation" class="form-label">Location (City/District)</label>
+                <input type="text" id="resLocation" class="form-control" required placeholder="e.g., Vizag"
+                  aria-required="true" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="resContact" class="form-label">Contact Phone Number</label>
+                <input type="tel" id="resContact" class="form-control" placeholder="Phone Number" pattern="[0-9]{10,15}"
+                  required aria-required="true" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="resTime" class="form-label">Availability Timeframe</label>
+                <input type="text" id="resTime" class="form-control" placeholder="e.g., 24/7, 9am-5pm" />
+              </div>
+
+              <div class="col-12">
+                <label for="resDetails" class="form-label">Additional Details or Restrictions</label>
+                <textarea id="resDetails" class="form-control" rows="3"
+                  placeholder="Dietary restrictions, age limits, etc."></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Add Resource / Service</button>
+          </fieldset>
+        </form>
+
+        <h3>Your Resources and Services</h3>
+        <div class="table-responsive">
+          <table id="resourceTable" class="table table-striped table-bordered" aria-describedby="resourceTableCaption">
+            <caption id="resourceTableCaption" class="visually-hidden">List of resources and services added by you</caption>
+            <thead>
+              <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Quantity/Capacity</th>
+                <th scope="col">Location</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Timeframe</th>
+                <th scope="col">Details</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Victim / Request Help Section -->
+      <section id="victim" class="tab-pane fade" role="tabpanel" aria-labelledby="victim-tab" tabindex="0">
+        <h2>Request Assistance</h2>
+
+        <!-- Available resources table -->
+        <h3>Available Resources</h3>
+        <div class="table-responsive mb-4">
+          <table id="availableTable" class="table table-striped table-bordered" aria-describedby="availableTableCaption">
+            <caption id="availableTableCaption" class="visually-hidden">Available resources for selection</caption>
+            <thead>
+              <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Quantity/Capacity</th>
+                <th scope="col">Location</th>
+                <th scope="col">Availability</th>
+                <th scope="col">Details</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Victim Request Details Form (hidden initially) -->
+        <form id="victimRequestForm" class="mb-4 visually-hidden" novalidate>
+          <h3>Fill Your Details for Request</h3>
+
+          <input type="hidden" id="selectedResIndex" />
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="victimReqType" class="form-label">Resource / Service Needed</label>
+              <input type="text" id="victimReqType" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-6">
+              <label for="victimReqLocation" class="form-label">Resource Location</label>
+              <input type="text" id="victimReqLocation" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-6">
+              <label for="victimReqVictimLocation" class="form-label">Your Location</label>
+              <input type="text" id="victimReqVictimLocation" class="form-control" placeholder="Enter your location" required />
+            </div>
+
+            <div class="col-md-6">
+              <label for="victimReqName" class="form-label">Your Name</label>
+              <input type="text" id="victimReqName" class="form-control" placeholder="Enter your full name" required />
+            </div>
+
+            <div class="col-md-6">
+              <label for="victimReqUrgency" class="form-label">Urgency Level</label>
+              <select id="victimReqUrgency" class="form-select" required>
+                <option value="" disabled selected>Select urgency</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+                <option>Critical</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="victimReqContact" class="form-label">Contact Phone Number</label>
+              <input type="tel" id="victimReqContact" class="form-control" placeholder="Phone Number" pattern="[0-9]{10,15}" required />
+            </div>
+
+            <div class="col-12">
+              <label for="victimReqDetails" class="form-label">Additional Information (Optional)</label>
+              <textarea id="victimReqDetails" class="form-control" rows="3" placeholder="Describe your situation"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-danger mt-3">Confirm Request</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- Confirmation Modal -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">Request Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Your request has been confirmed and placed successfully.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-primary text-light text-center py-4 mt-5">
+    <h4>Contact Support</h4>
+    <p>Email: <a href="mailto:reliefconnect@ngo.org" class="text-light text-decoration-underline">reliefconnect@ngo.org</a>
+      | Helpline: 108 | Emergency Hotline: +91-99999-99999</p>
+    <p>© 2025 ReliefConnect | Developed for Disaster Response Simulation</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="functions.js"></script>
+</body>
+
+</html>
